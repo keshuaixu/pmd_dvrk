@@ -143,8 +143,20 @@ The json config for WPI dvrk MTML is provided [here](https://github.com/urill/dv
 roslaunch dvrk_robot dvrk_arm_rviz.launch arm:=MTML config:=/path/to/config/console-MTML.json 
 ```
 
+Now use it like the regular old dvrk.
+
 # things that don't work
 - E-stop not implemented
--
-
+  - The solid state relay in the box is for DC only. Replace it with an AC relay.
+- the footpedal and gripper sensor inputs are not tested
+- the communication between PMD ARM core and the motor amps seems to be very slow
+  - I could only achive 100+ Hz control cycle, which is way too slow for position PID
+  - PMD is investigating this issue
+ - PMD stops listening to UDP randomly
+  - PMD is investigating this issue
+ 
 # future work
+- If the communication speed and reliability can be improved, `dvrk_ros_pmd` should be reimplemented in c++ and be part of `sawRobotIO1394` for simplicity. When you do that, **revert the `sawIntuitiveResearchKit` to the [jhu vanilla version](https://github.com/jhu-dvrk/sawIntuitiveResearchKit/).** The modification in my fork removed the homing sequence because the position PID does not work, causing the robot unable to home.
+- If the communication issue cannot be resolved, you can try running to position and velocity loop on PMD. You will need to calculate the actuator position/velocity target, because the loop in dvrk are joint-based instead of actuator-based.
+
+
