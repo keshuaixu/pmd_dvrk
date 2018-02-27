@@ -6,9 +6,15 @@ The PMD machine controller is a complete motor control solution built with an AR
 
 I wanted to make this PMD controller a drop-in replacement for the QLA+firewire controller. Unfortunately, [cisst-saw](https://github.com/jhu-cisst/cisst-saw) was not written with an alternative motor controller in mind. For now, part of this project exists as a fork of cisst-saw, which means the PMD-based controller cannot co-exist with the QLA+firewire-based controller. 
 
+I made an adapter board that sits on top of the machine controller.
+
 I removed the code in `sawRobotIO1394` that talks to the firewire, and **exposed the read/write of internal states (commanded motor current, encoder position/velocity, pot position, etc) to the ROS interface** by modifying the ROS bridge in `dvrk-ros`. 
 
-I created a python script (can be found in `dvrk_ros_pmd`) to serve as a bridge between the aforementioned states in `sawRobotIO1394` and the states on the PMD hardware. It communicates with PMD hardware via UDP packets over ethernet. It communicates with `sawRobotIO1394` through ROS.
+I created a python script (can be found in `dvrk_ros_pmd`) to **serve as a bridge between the aforementioned states in `sawRobotIO1394` and the states on the PMD hardware**. It communicates with PMD hardware via UDP packets over ethernet. It communicates with `sawRobotIO1394` through ROS.
+
+`pmd-davinci-firmware` runs on PMD. It parses the UDP packets from `dvrk_ros_pmd` and writes the desired motor output to the Atlas motor amplifiers. It reads encoder/pot/motor current and sends them as a broadcast packet over UDP to `dvrk_ros_pmd`.
+
+`pypmd` talks to PMD via the Remote Access Protocol (based on TCP packets). It is a python re-implementation of the PMD host api, because the api supplied by PMD heavily depends on windows socket, which does not work on gnu/linux. `pypmd` is good for sending few commands to PMD, but is too slow for real-time control.
 
 # repositories
 * `cisst-ros` fork: modified `sawRobotIO1394` and other supporting components https://github.com/urill/cisst-ros
