@@ -98,12 +98,50 @@ git clone https://github.com/urill/dvrk-ros
 
 ## dvrk_ros_pmd
 
+Python version >= **3.6**
+
 ```bash
 cd ~/catkin_ws/src
 git clone https://github.com/urill/dvrk_ros_pmd
 ```
 
-## 
+## don't forget to build
+```
+catkin build
+source devel_release/setup.bash
+```
+
+# run
+
+## ros
+
+Make sure your ROS environment variables are set. then
+
+```
+source /opt/ros/kinetic/setup.bash
+source devel_release/setup.bash
+```
+
+## run the python script
+
+change the value of `--arm` and `--pmd*` so they match your system.
+
+`--pmd1` is the ip of the PMD that connects to joint 1, 2, 3, 4.
+
+`--pmd5` is the ip of the PMD that connects to joint 5, 6, 7.
+
+```
+cd ~/catkin_ws/src/dvrk_ros_pmd/src
+python3.6 io_pmd.py --arm=MTML --pmd1=192.168.1.42 --pmd5=192.168.1.41
+```
+
+## run the dvrk console like you used to
+
+The json config for WPI dvrk MTML is provided [here](https://github.com/urill/dvrk_ros_pmd/tree/master/config).
+
+```
+roslaunch dvrk_robot dvrk_arm_rviz.launch arm:=MTML config:=/path/to/config/console-MTML.json 
+```
 
 # things that don't work
 - E-stop not implemented
