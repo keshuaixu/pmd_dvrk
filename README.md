@@ -1,7 +1,7 @@
-# pmd dvrk project
+# PMD dVRK Project
 **A compatible dvrk controller based on PMD Prodigy/CME machine controller.** This repository only contains documentation and links to the components.
 
-# overview
+# Overview
 The PMD machine controller is a complete motor control solution built with an ARM microcontroller to run user code, an FPGA to handle IO, and motor amplifiers (Atlas). The Atlas has a microcontroller for software current control and three half bridges. Because the current control runs in software (instead of hardware analog circuit with the low-pass filter in QLA), you get higher bandwidth and tuneable current control performance.
 
 I wanted to make this PMD controller a drop-in replacement for the QLA+firewire controller. Unfortunately, [cisst-saw](https://github.com/jhu-cisst/cisst-saw) was not written with an alternative motor controller in mind. For now, part of this project exists as a fork of cisst-saw, which means the PMD-based controller cannot co-exist with the QLA+firewire-based controller. 
@@ -18,7 +18,7 @@ I created a python script (can be found in `dvrk_ros_pmd`) to **serve as a bridg
 
 `pypmd` talks to PMD via the Remote Access Protocol (based on TCP packets). It is a python re-implementation of the PMD host API because the API supplied by PMD heavily depends on windows socket, which does not work on gnu/linux. `pypmd` is good for sending few commands to PMD, but is too slow for real-time control.
 
-# repositories
+# Repositories
 * `cisst-ros` fork: modified `sawRobotIO1394` and other supporting components https://github.com/urill/cisst-ros
 * `dvrk-ros` fork: exposed some internal states to ROS https://github.com/urill/dvrk-ros
 * `dvrk_ros_pmd`: python script that runs on your computer, talks to PMD over ethernet, and talks to `sawRobotIO1394` through ROS https://github.com/urill/dvrk_ros_pmd
@@ -27,7 +27,7 @@ I created a python script (can be found in `dvrk_ros_pmd`) to **serve as a bridg
 * `pmd_davinci_adapter`: design files for the pmd -> dvrk interface adapter board https://github.com/urill/pmd_davinci_adapter
 * `pmd-dvrk-docker`: *obsolete+broken*. dockerfile to create an environment for this project https://github.com/urill/pmd-dvrk-docker
 
-# hardware setup
+# Hardware Setup
 ![](hw.jpg)
 
 The controller box is pre-wired and ready to use as of Feb 2018.
@@ -40,7 +40,7 @@ Make sure the SCSI and DB9 cables are connected between the PMD and the interfac
 
 Each PMD connects to a port on the ethernet switch. They expect a gateway on `192.168.1.1` with the subnet mask of `24`. The static IP address for the left PMD is `192.168.1.42`, and `192.168.1.41` for the right one. If you don't have a router, set the IP address of your computer's ethernet interface to `192.168.1.1`. These TCP/IP parameters can be reconfigured in the Pro-Motion software.
 
-# software setup
+# Software Setup
 
 ## cisst workspace
 Because this project does not co-exist with the vanilla cisst-saw, you need a new ros workspace.
@@ -111,7 +111,7 @@ catkin build
 source devel_release/setup.bash
 ```
 
-# run
+# Run
 
 ## ros
 
@@ -146,16 +146,16 @@ roslaunch dvrk_robot dvrk_arm_rviz.launch arm:=MTML config:=/path/to/config/cons
 Now use it like the regular old dvrk. You should see the rviz model moves with the real robot. You can try turning on the gravity compensation.
 
 
-# things that don't work
+# Things that don't work
 - E-stop not implemented
   - The solid state relay in the box is for DC only. Replace it with an AC relay.
 - the foot pedal and gripper sensor inputs are not tested
 - the communication between PMD ARM core and the motor amps seems to be very slow
   - I could only achieve 100+ Hz control cycle, which is way too slow for position PID
   - PMD is investigating this issue
- - PMD stops listening to UDP randomly
+- PMD stops listening to UDP randomly
   - PMD is investigating this issue
  
-# future work
+# Future work
 - If the communication speed and reliability can be improved, `dvrk_ros_pmd` should be reimplemented in c++ and be part of `sawRobotIO1394` for simplicity. When you do that, **revert the `sawIntuitiveResearchKit` to the [jhu vanilla version](https://github.com/jhu-dvrk/sawIntuitiveResearchKit/).** The modification in my fork removed the homing sequence because the position PID does not work, causing the robot unable to home.
 - If the communication issue cannot be resolved, you can try running to position and velocity loop on PMD. You will need to calculate the actuator position/velocity target because the loop in dvrk is joint-based instead of actuator-based.
