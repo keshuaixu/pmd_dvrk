@@ -1,5 +1,7 @@
 # PMD dVRK Project
-**A dvrk-console-compatible motor driver based on PMD Prodigy/CME machine controller for improved force feedback.** This repository only contains documentation and links to the components.
+**A dVRK-console-compatible motor driver based on PMD Prodigy/CME machine controller for improved force feedback.** 
+
+This repository only contains documentation and links.
 
 # Overview
 The PMD machine controller is a complete motor control solution built with an ARM microcontroller to run user code, an FPGA to handle IO, and motor amplifiers (Atlas). The Atlas has a microcontroller for software current control and three half bridges. Because the current control runs in software (instead of hardware analog circuit with the low-pass filter in QLA), you get higher bandwidth and tuneable current control performance.
