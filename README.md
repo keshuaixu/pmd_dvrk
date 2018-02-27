@@ -19,7 +19,11 @@ I created a python script (can be found in `dvrk_ros_pmd`) to **serve as a bridg
 `pypmd` talks to PMD via the Remote Access Protocol (based on TCP packets). It is a python re-implementation of the PMD host API because the API supplied by PMD heavily depends on windows socket, which does not work on gnu/linux. `pypmd` is good for sending few commands to PMD, but is too slow for real-time control.
 
 # Repositories
-* `cisst-ros` fork: modified `sawRobotIO1394` and other supporting components https://github.com/urill/cisst-ros
+* `cisst-saw` fork: modified `sawRobotIO1394` and other supporting components https://github.com/urill/cisst-saw
+  * https://github.com/urill/sawRobotIO1394
+  * https://github.com/urill/mechatronics-software
+  * https://github.com/urill/cisst-ros
+  * https://github.com/urill/sawIntuitiveResearchKit *temporary hack that should be reverted - see below*
 * `dvrk-ros` fork: exposed some internal states to ROS https://github.com/urill/dvrk-ros
 * `dvrk_ros_pmd`: python script that runs on your computer, talks to PMD over ethernet, and talks to `sawRobotIO1394` through ROS https://github.com/urill/dvrk_ros_pmd
 * `pmd-davinci-firmware`: program that runs on the microcontroller on the PMD https://github.com/urill/pmd-davinci-firmware
