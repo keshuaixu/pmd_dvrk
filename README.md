@@ -127,6 +127,13 @@ Make sure your ROS environment variables are set. then
 source /opt/ros/kinetic/setup.bash
 source devel_release/setup.bash
 ```
+## run the dvrk console like you used to
+
+The json config for WPI dvrk MTML is provided [here](https://github.com/urill/dvrk_ros_pmd/tree/master/config).
+
+```
+roslaunch dvrk_robot dvrk_arm_rviz.launch arm:=MTML config:=/path/to/config/console-MTML.json 
+```
 
 ## run the python script
 
@@ -139,14 +146,6 @@ change the value of `--arm` and `--pmd*` so they match your system.
 ```
 cd ~/catkin_ws/src/dvrk_ros_pmd/src
 python3.6 io_pmd.py --arm=MTML --pmd1=192.168.1.42 --pmd5=192.168.1.41
-```
-
-## run the dvrk console like you used to
-
-The json config for WPI dvrk MTML is provided [here](https://github.com/urill/dvrk_ros_pmd/tree/master/config).
-
-```
-roslaunch dvrk_robot dvrk_arm_rviz.launch arm:=MTML config:=/path/to/config/console-MTML.json 
 ```
 
 Now use it like the regular old dvrk. You should see the rviz model moves with the real robot. You can try turning on the gravity compensation.
