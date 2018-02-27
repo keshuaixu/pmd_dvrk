@@ -161,5 +161,6 @@ Now use it like the regular old dvrk. You should see the rviz model moves with t
   - PMD is investigating this issue
  
 # Future work
-- If the communication speed and reliability can be improved, `dvrk_ros_pmd` should be reimplemented in c++ and be part of `sawRobotIO1394` for simplicity. When you do that, **revert the `sawIntuitiveResearchKit` to the [jhu vanilla version](https://github.com/jhu-dvrk/sawIntuitiveResearchKit/).** The modification in my fork removed the homing sequence because the position PID does not work, causing the robot unable to home.
+- If the communication speed and reliability can be improved, `dvrk_ros_pmd` should be reimplemented in c++ and be part of `sawRobotIO1394` for simplicity. 
+ - When you do that, **revert the `sawIntuitiveResearchKit` to the [jhu vanilla version](https://github.com/jhu-dvrk/sawIntuitiveResearchKit/).** The modification in my fork is a temporary hack that removed the homing sequence for testing the system without a functioning position loop.
 - If the communication issue cannot be resolved, you can try running to position and velocity loop on PMD. You will need to calculate the actuator position/velocity target because the loop in dvrk is joint-based instead of actuator-based.
