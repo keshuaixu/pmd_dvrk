@@ -42,6 +42,68 @@ Each PMD connects to a port on the ethernet switch. They expect a gateway on `19
 
 # software setup
 
+## cisst workspace
+Because this project do not co-exist with the vanilla cisst-saw, you need a new ros workspace.
+
+The steps are the same as acquiring the vanilla cisst-saw code, except you get code from a different repository. https://github.com/jhu-cisst/cisst/wiki/Compiling-cisst-and-SAW-with-CMake
+
+If you already have `catkin_ws`, use a different name for the new workspace.
+
+```bash
+mkdir -p ~/catkin_ws/src
+cd ~/catkin_ws
+catkin init
+
+cd ~/catkin_ws/src
+git clone https://github.com/urill/cisst-saw --recursive
+
+# make sure we are in the right place
+cd ~/catkin_ws
+# make sure you have the proper ROS environment variables
+source /opt/ros/kinetic/setup.bash
+# create a profile named debug with _release extension
+catkin config --profile release -x _release
+# switch to newly created release profile
+catkin profile set release
+# set default CMake build type
+catkin config --cmake-args -DCMAKE_BUILD_TYPE=Release
+# build
+catkin build
+# set environment variables - MAKE SURE YOU SOURCE THE RIGHT FILE (debug vs. release)
+source devel_release/setup.bash
+```
+
+Make sure this workspace does not extend your other workspaces that have `cisst-saw`.
+
+```
+catkin config
+```
+
+You should see
+
+```
+Profile:                     release
+Extending:          [cached] /opt/ros/kinetic
+...
+```
+
+If not, remove the other workspace from the config. http://catkin-tools.readthedocs.io/en/latest/verbs/catkin_config.html
+
+## dvrk-ros
+
+```bash
+cd ~/catkin_ws/src
+git clone https://github.com/urill/dvrk-ros
+```
+
+## dvrk_ros_pmd
+
+```bash
+cd ~/catkin_ws/src
+git clone https://github.com/urill/dvrk_ros_pmd
+```
+
+## 
 
 # things that don't work
 - E-stop not implemented
