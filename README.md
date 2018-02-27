@@ -8,6 +8,8 @@ I wanted to make this PMD controller a drop-in replacement for the QLA+firewire 
 
 I made an adapter board that sits on top of the machine controller.
 
+![](block.png)
+
 I removed the code in `sawRobotIO1394` that talks to the firewire, and **exposed the read/write of internal states (commanded motor current, encoder position/velocity, pot position, etc) to the ROS interface** by modifying the ROS bridge in `dvrk-ros`. 
 
 I created a python script (can be found in `dvrk_ros_pmd`) to **serve as a bridge between the aforementioned states in `sawRobotIO1394` and the states on the PMD hardware**. It communicates with PMD hardware via UDP packets over ethernet. It communicates with `sawRobotIO1394` through ROS.
