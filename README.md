@@ -1,14 +1,19 @@
 # pmd dvrk project
 **A compatible dvrk controller based on PMD Prodigy/CME machine controller.** This repository only contains documentation and links to the components.
 
-# how it works
+# overview
 The PMD machine controller is a complete motor control solution built with an ARM microcontroller to run user code, an FPGA to handle IO, and motor amplifiers (Atlas). The Atlas has a microcontroller for software current control and three half bridges. Because the current control runs in software (instead of hardware analog circuit with low-pass filter in QLA), you get higher bandwidth and tuneable current control performance.
 
-I wanted to make this PMD controller a drop-in replacement for the QLA+firewire controller. Unfortunately, the cisst-saw kit was not written with alternative motor controller in mind. 
+I wanted to make this PMD controller a drop-in replacement for the QLA+firewire controller. Unfortunately, [cisst-saw](https://github.com/jhu-cisst/cisst-saw) was not written with an alternative motor controller in mind. For now, part of this project exists as a fork of cisst-saw, which means the PMD-based controller cannot co-exist with the QLA+firewire-based controller. 
 
+I removed the code in `sawRobotIO1394` that talks to the firewire, and **exposed the read/write of internal states (commanded motor current, encoder position/velocity, pot position, etc) to the ROS interface** by modifying the ROS bridge in `dvrk-ros`. 
+
+I created a python script (can be found in `dvrk_ros_pmd`) to serve as a bridge between the aforementioned states in `sawRobotIO1394` and the states on the PMD hardware. It communicates with PMD hardware via UDP packets over ethernet. It communicates with `sawRobotIO1394` through ROS.
 
 # repositories
-* `cisst-ros` fork: modified `sawRobotIO1394` and supporting components https://github.com/urill/cisst-ros
+* `cisst-ros` fork: modified `sawRobotIO1394` and other supporting components https://github.com/urill/cisst-ros
+* `dvrk-ros` fork: exposed some internal states to ROS https://github.com/urill/dvrk-ros
+* `dvrk_ros_pmd`: python script that runs on your computer, talks to PMD over ethernet, and talks to `sawRobotIO1394` through ROS https://github.com/urill/dvrk_ros_pmd
 * `pmd-davinci-firmware`: program that runs on the microcontroller on the PMD https://github.com/urill/pmd-davinci-firmware
 * `pypmd`: native python api for PMD Remote Access Protocol https://github.com/urill/pypmd
 * `pmd_davinci_adapter`: design files for the pmd -> dvrk interface adapter board https://github.com/urill/pmd_davinci_adapter
